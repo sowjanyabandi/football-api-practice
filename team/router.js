@@ -6,4 +6,11 @@ router.get("/team", (request, response, next) => {
     .then(rows => response.send(rows))
     .catch(next);
 });
+
+router.post("/team", (request, response, next) => {
+  Team.create(request.body)
+    .then(team => response.send(team))
+    .catch(error => next(error));
+});
+
 module.exports = router;
