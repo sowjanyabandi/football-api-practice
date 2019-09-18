@@ -1,19 +1,20 @@
+const Team = require("../team/model");
 const { Router } = require("express");
-const Team = require("./model");
+const Player = require("./model");
 router = new Router();
-router.get("/team", (request, response, next) => {
-  Team.findAll()
+router.get("/player", (request, response, next) => {
+  Player.findAll()
     .then(rows => response.send(rows))
     .catch(next);
 });
 
-router.post("/team", (request, response, next) => {
-  Team.create(request.body)
+router.post("/player", (request, response, next) => {
+  Player.create(request.body)
     .then(team => response.send(team))
     .catch(error => next(error));
 });
-router.get("/team/:id", (request, response, next) => {
-  Team.findByPk(request.params.id)
+router.get("/player/:id", (request, response, next) => {
+  Player.findByPk(request.params.id, { include: [Team] })
     .then(team => {
       if (!team) {
         response.status(404).end();
@@ -23,8 +24,8 @@ router.get("/team/:id", (request, response, next) => {
     })
     .catch(next);
 });
-router.put("/team/:id", (request, response, next) => {
-  Team.findByPk(request.params.id)
+router.put("/player/:id", (request, response, next) => {
+  Player.findByPk(request.params.id)
     .then(team => {
       if (!team) {
         response.status(404).end();
